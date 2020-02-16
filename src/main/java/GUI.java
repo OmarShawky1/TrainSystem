@@ -27,9 +27,14 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
         mainWindow = primaryStage;
 
-        addPassengerScene();
+        showAvailableSeatsScene();
 
         createMainWindowDefaultSettings();
+    }
+
+    private void showAvailableSeatsScene() {
+
+        
     }
 
     private void addPassengerScene() {

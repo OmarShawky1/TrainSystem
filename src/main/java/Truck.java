@@ -1,5 +1,5 @@
 public class Truck {
-    int numberOfSeats = 30;
+    int numberOfSeats = 2;
 
     public Truck(){
         Seat[] seats = new Seat[numberOfSeats];
