@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -27,51 +28,88 @@ public class GUI extends Application {
     public void start(Stage primaryStage) {
         mainWindow = primaryStage;
 
-        showAvailableSeatsScene();
+        issueATicketScene();
 
         createMainWindowDefaultSettings();
     }
 
-    private void showAvailableSeatsScene() {
 
-        
-    }
+    private void issueATicketScene() {
 
-    private void addPassengerScene() {
-
-        //creating entries
+        /*  creating customer data entries   */
         VBox firstName = createField("First Name", "T");
-
         VBox lastName = createField("Last Name", "T");
 
-        VBox classType = createField("Train Class Type", "C");
-        ComboBox classTypeComboBox = (ComboBox) classType.getChildren().get(1);
-        classTypeComboBox.getItems().addAll("VIP", "First Class", "Second  Class", "Third Class");
-        classTypeComboBox.setValue("Second Class");
+        //adding all customer data to one hbox
+        HBox customerData = new HBox();
+        customerData.setSpacing(20);
+        customerData.getChildren().addAll(firstName, lastName);
 
-        VBox trainDay = createField("Train Day", "C");
-        ComboBox trainDayComboBox = (ComboBox) trainDay.getChildren().get(1);
+
+
+        /*  creating trip data entries  */
+
+        //creating train class type (VIP-First-Second....)
+        VBox trainClassType = createField("Train Class Type", "C");
+        ComboBox trainClassTypeCB = (ComboBox) trainClassType.getChildren().get(1);
+        trainClassTypeCB.getItems().addAll("VIP", "First Class", "Second  Class", "Third Class");
+        trainClassTypeCB.setValue("Second Class");
+
+        //creating train trip starting date
+        VBox tripInitialDate = createField("Train Day", "C");
+        ComboBox tripInitialDateCB = (ComboBox) tripInitialDate.getChildren().get(1);
         LocalDate localDate = LocalDate.of(2020, Month.JANUARY, 1);
-        trainDayComboBox.setValue(localDate);
+        tripInitialDateCB.setValue(localDate);
         for (int i = 0; i < 30; i++) {
-            trainDayComboBox.getItems().addAll(localDate);
+            tripInitialDateCB.getItems().addAll(localDate);
             localDate = localDate.plusDays(1);
         }
 
-        VBox trainTime = createField("Train Time", "C");
-        ComboBox trainTimeComboBox = (ComboBox) trainTime.getChildren().get(1);
+        //creating train trip starting time
+        VBox tripInitialTime = createField("Train Time", "C");
+        ComboBox tripInitialTimeCB = (ComboBox) tripInitialTime.getChildren().get(1);
         LocalTime localTime = LocalTime.of(0, 0);
-        trainTimeComboBox.setValue(localTime);
+        tripInitialTimeCB.setValue(localTime);
         for (int i = 0; i < 95; i++) {
             localTime = localTime.plusMinutes(15);
-            trainTimeComboBox.getItems().addAll(localTime.toString());
+            tripInitialTimeCB.getItems().addAll(localTime.toString());
         }
 
-//        Button addPassenger = new Button("Buy Ticket")
+        // adding all train data to one hbox
+        HBox trainData = new HBox();
+        trainData.setSpacing(20);
+        trainData.getChildren().addAll(trainClassType, tripInitialDate, tripInitialTime);
+
+
+
+        /*  creating Station data entries  */
+
+        //creating current station entry
+        VBox currentStation = createField("Current Station", "C");
+        ComboBox currentStationCB = ((ComboBox) currentStation.getChildren().get(1));
+        currentStationCB.getItems().addAll(1, 2, 3);
+
+        //creating destination station entry
+        VBox destinationStation = createField("Destination Station", "C");
+        ComboBox destinationStationCB = ((ComboBox) destinationStation.getChildren().get(1));
+        destinationStationCB.getItems().addAll(1, 2, 3);
+
+        //adding all station entries to one hbox
+        HBox stationData = new HBox();
+        stationData.setSpacing(20);
+        stationData.getChildren().addAll(currentStation, destinationStation);
+
+
+        //creating button to issue ticket with selected data
+        Button issueTicketButton = new Button("Issue A Ticket");
+
+        issueTicketButton.setOnAction(event -> TrainSystem.issueTicket(((int) currentStationCB.getValue()),
+                ((int) destinationStationCB.getValue())));
+
 
         VBox allComponents = new VBox();
         allComponents.setSpacing(20);
-        allComponents.getChildren().addAll(firstName, lastName, classType, trainDayComboBox, trainTime);
+        allComponents.getChildren().addAll(customerData, trainData, stationData, issueTicketButton);
 
         //adding them to the middle using grid pane and adding this grid pane to center
         GridPane gridPane = defaultGridPane(allComponents);
