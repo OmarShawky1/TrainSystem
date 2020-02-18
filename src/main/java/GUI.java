@@ -56,7 +56,7 @@ public class GUI extends Application {
         trainClassTypeCB.setValue("Second Class");
 
         //creating train trip starting date
-        VBox tripInitialDate = createField("Train Day", "C");
+        VBox tripInitialDate = createField("Trip Day", "C");
         ComboBox tripInitialDateCB = (ComboBox) tripInitialDate.getChildren().get(1);
         LocalDate localDate = LocalDate.of(2020, Month.JANUARY, 1);
         tripInitialDateCB.setValue(localDate);
@@ -66,7 +66,7 @@ public class GUI extends Application {
         }
 
         //creating train trip starting time
-        VBox tripInitialTime = createField("Train Time", "C");
+        VBox tripInitialTime = createField("Trip Time", "C");
         ComboBox tripInitialTimeCB = (ComboBox) tripInitialTime.getChildren().get(1);
         LocalTime localTime = LocalTime.of(0, 0);
         tripInitialTimeCB.setValue(localTime);

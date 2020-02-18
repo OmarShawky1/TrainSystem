@@ -1,14 +1,13 @@
 public class Train {
 
-    private int numberOfTrucks = 2;
     private int position;
     private int trainDirection;
-    private static Truck[] trucks;
+    private TrainStatus[] trainStatuses;
 
-    public Train(int position, int direction) {
-        trucks = new Truck[numberOfTrucks];
+    public Train(int position, int trainDirection) {
         this.position = position;
-        this.trainDirection = direction;
+        this.trainDirection = trainDirection;
+        this.trainStatuses = new TrainStatus[TrainSystem.getNUMBEROFSTATIONS()];
     }
 
     public void move() {
@@ -32,19 +31,19 @@ public class Train {
         }
     }
 
-    public boolean checkForFreeSeatsAt(int currentPosition) {
-        for (Truck truck: trucks){
-            if (truck.checkForFreeSeatsAt(currentPosition)){
-                return true;
-            }
-        }
-        return false;
-    }
-
     public int getDirection() {
         return trainDirection;
     }
-    public int getPosition(){
+
+    public int getPosition() {
         return position;
+    }
+
+    public TrainStatus[] getTrainStatuses() {
+        return trainStatuses;
+    }
+
+    public void setTrainStatuses(TrainStatus[] trainStatuses) {
+        this.trainStatuses = trainStatuses;
     }
 }
