@@ -11,14 +11,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 
 public class GUI extends Application {
 
-    Stage mainWindow;
+    private Stage mainWindow;
+    private Label notificationLabel;
 
     public static void main(String[] args) {
         launch(args);
@@ -103,19 +103,34 @@ public class GUI extends Application {
         //creating button to issue ticket with selected data
         Button issueTicketButton = new Button("Issue A Ticket");
 
-        issueTicketButton.setOnAction(event -> TrainSystem.issueTicket(((int) currentStationCB.getValue()),
-                ((int) destinationStationCB.getValue())));
+        notificationLabel = new Label();
+        issueTicketButton.setOnAction(event -> updateNotification(tripInitialDateCB.getValue().toString(), tripInitialTimeCB.getValue().toString(),
+                 trainClassTypeCB.getValue().toString(), currentStationCB.getValue().toString(), destinationStationCB.getValue().toString()));
+//        issueTicketButton.setOnAction(event -> System.out.println(tripInitialDateCB.getValue()));
+
+        HBox issueBtnAndNotification = new HBox();
+        issueBtnAndNotification.getChildren().addAll(issueTicketButton, notificationLabel);
 
 
         VBox allComponents = new VBox();
         allComponents.setSpacing(20);
-        allComponents.getChildren().addAll(customerData, trainData, stationData, issueTicketButton);
+        allComponents.getChildren().addAll(customerData, trainData, stationData, issueBtnAndNotification);
 
         //adding them to the middle using grid pane and adding this grid pane to center
         GridPane gridPane = defaultGridPane(allComponents);
 
         BorderPane borderPane = defaultBorderPane("Add Passenger", gridPane);
         mainWindow.setScene(new Scene(borderPane));
+    }
+
+    private void updateNotification(String date, String time, String classTpe, String positionS, String destinationS) {
+        int position = Integer.parseInt(positionS);
+        int destination = Integer.parseInt(destinationS);
+        boolean success = Ticket.issueATicket(date, time, classTpe, position, destination);
+
+        if (success)
+            notificationLabel.setText("Ticket Issued");
+
     }
 
     private GridPane defaultGridPane(Node allComponents) {
